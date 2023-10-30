@@ -3,17 +3,16 @@ import { useParams } from "react-router-dom";
 import { Table, Pagination, Form } from "react-bootstrap";
 
 const ResourceDetails = () => {
-  const { resource } = useParams(); // Assuming the resource ID is part of the URL
+  const { resource } = useParams();
   const [resourceData, setResourceData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage] = useState(50);
   const [sortField, setSortField] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
-  const [searchTerm, setSearchTerm] = useState(""); // State for search term
+  const [searchTerm, setSearchTerm] = useState(""); 
 
   useEffect(() => {
-    // Fetch resource data based on the resource ID
     fetch(`https://engineering-task.elancoapps.com/api/resources/${resource}`)
       .then((response) => response.json())
       .then((data) => {
@@ -35,9 +34,7 @@ const ResourceDetails = () => {
     return <div>No data available for this resource.</div>;
   }
 
-  // Convert the data to an array
   const resourceArray = Object.entries(resourceData);
-
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
 
@@ -47,7 +44,6 @@ const ResourceDetails = () => {
     );
   });
 
-  // Sort data based on the selected field and direction
   const sortedData = [...filteredData].sort((a, b) => {
     if (sortDirection === "asc") {
       return a[1][sortField] > b[1][sortField] ? 1 : -1;
@@ -74,10 +70,8 @@ const ResourceDetails = () => {
     pageNumbers.push(i);
   }
 
-  // Function to handle sorting
   const handleSort = (field) => {
     if (field === sortField) {
-      // Toggle the sort direction if the same field is clicked
       setSortDirection((prevSortDirection) =>
         prevSortDirection === "asc" ? "desc" : "asc"
       );
@@ -94,10 +88,9 @@ const ResourceDetails = () => {
     return null;
   };
 
-  // Handler for search input change
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
-    setCurrentPage(1); // Reset to the first page when searching
+    setCurrentPage(1);
   };
 
   const centerAlignStyle = {

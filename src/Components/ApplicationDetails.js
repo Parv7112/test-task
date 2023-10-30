@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Table, Pagination, Form } from "react-bootstrap"; // Import Form
+import { Table, Pagination, Form } from "react-bootstrap";
 
 const ApplicationDetails = () => {
   const { application } = useParams();
@@ -10,7 +10,7 @@ const ApplicationDetails = () => {
   const [recordsPerPage] = useState(50);
   const [sortField, setSortField] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
-  const [searchTerm, setSearchTerm] = useState(""); // State for search term
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetch(
@@ -35,9 +35,7 @@ const ApplicationDetails = () => {
     return <div>No data available for this application.</div>;
   }
 
-  // Convert the data to an array
   const applicationArray = Object.entries(applicationData);
-
   const indexOfLastRecord = currentPage * recordsPerPage;
   const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
 
@@ -47,7 +45,6 @@ const ApplicationDetails = () => {
     );
   });
   
-  // Sort data based on the selected field and direction
   const sortedData = [...filteredData].sort((a, b) => {
     if (sortDirection === "asc") {
       return a[1][sortField] > b[1][sortField] ? 1 : -1;
@@ -74,10 +71,8 @@ const ApplicationDetails = () => {
     pageNumbers.push(i);
   }
 
-  // Function to handle sorting
   const handleSort = (field) => {
     if (field === sortField) {
-      // Toggle the sort direction if the same field is clicked
       setSortDirection((prevSortDirection) =>
         prevSortDirection === "asc" ? "desc" : "asc"
       );
@@ -94,10 +89,9 @@ const ApplicationDetails = () => {
     return null;
   };
 
-  // Handler for search input change
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
-    setCurrentPage(1); // Reset to the first page when searching
+    setCurrentPage(1);
   };
 
   const centerAlignStyle = {
