@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Table, Pagination, Button } from "react-bootstrap";
+import { Table, Pagination, Button, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 function RawDetails() {
   const [result, setResult] = useState([]);
+  const [loading, setLoading] = useState(true); // New state for loading
   const [error, setError] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortedField, setSortedField] = useState(null);
@@ -26,8 +27,16 @@ function RawDetails() {
       })
       .catch((error) => {
         setError(error);
+      })
+      .finally(() => {
+        setLoading(false); // Set loading to false when done
       });
   }, []);
+
+  if (loading) {
+    // Display a loading spinner while fetching data
+    return <Spinner animation="border" role="status" className="d-block mx-auto my-5" />;
+  }
 
   if (error) {
     return <div>Error: {error.message}</div>;
