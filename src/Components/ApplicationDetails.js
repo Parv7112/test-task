@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Table, Pagination, Form } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
+import { Table, Pagination, Form, Button } from "react-bootstrap";
 
 const ApplicationDetails = () => {
   const { application } = useParams();
@@ -11,6 +11,7 @@ const ApplicationDetails = () => {
   const [sortField, setSortField] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(
@@ -44,7 +45,7 @@ const ApplicationDetails = () => {
       item.toString().toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
-  
+
   const sortedData = [...filteredData].sort((a, b) => {
     if (sortDirection === "asc") {
       return a[1][sortField] > b[1][sortField] ? 1 : -1;
@@ -52,12 +53,12 @@ const ApplicationDetails = () => {
       return a[1][sortField] < b[1][sortField] ? 1 : -1;
     }
   });
-  
+
   const currentRecords = sortedData.slice(
     indexOfFirstRecord,
     indexOfLastRecord
   );
-    
+
   const totalPages = Math.ceil(filteredData.length / recordsPerPage);
 
   const paginate = (pageNumber) => {
@@ -110,6 +111,13 @@ const ApplicationDetails = () => {
 
   return (
     <div>
+      <Button
+        onClick={() => navigate("/")}
+        variant="outline-secondary fw-bold"
+        className="ml-auto my-2 mx-2"
+      >
+        Back
+      </Button>
       <h2 className="text-center my-3">{application} Details</h2>
       <div style={{ marginBottom: "10px" }}>
         <Form.Control

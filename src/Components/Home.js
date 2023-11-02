@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Home() {
   const [applications, setApplications] = useState([]);
@@ -9,6 +10,7 @@ function Home() {
   const [appLoading, setAppLoading] = useState(true);
   const [resLoading, setResLoading] = useState(true);
   const [result, setResult] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("https://engineering-task.elancoapps.com/api/applications")
@@ -48,7 +50,22 @@ function Home() {
 
   return (
     <div>
-      <Tabs defaultActiveKey="Application" id="fill-tab-example" className="mb-3 fs-2" fill>
+      <div>
+        <Link to="/raw-details">
+          <Button
+            variant="outline-secondary fw-bold"
+            className="ml-auto my-2 mx-2"
+          >
+            Raw Details
+          </Button>
+        </Link>
+      </div>
+      <Tabs
+        defaultActiveKey="Application"
+        id="fill-tab-example"
+        className="mb-3 fs-2"
+        fill
+      >
         <Tab eventKey="Application" title="Application">
           {appLoading ? (
             <div>Loading Applications...</div>
@@ -68,9 +85,12 @@ function Home() {
                     <tr key={index}>
                       <td className="fs-5">{index + 1}</td>
                       <td className="fs-5">
-                      <Link className="text-decoration-none text-black" to={`/application/${item}`}>
-                        {item}
-                    </Link>
+                        <Link
+                          className="text-decoration-none text-black"
+                          to={`/application/${item}`}
+                        >
+                          {item}
+                        </Link>
                       </td>
                     </tr>
                   ))}
@@ -98,9 +118,12 @@ function Home() {
                     <tr key={index}>
                       <td className="fs-5">{index + 1}</td>
                       <td className="fs-5">
-                      <Link className="text-decoration-none text-black" to={`/resources/${item}`}>
-                        {item}
-                    </Link>
+                        <Link
+                          className="text-decoration-none text-black"
+                          to={`/resources/${item}`}
+                        >
+                          {item}
+                        </Link>
                       </td>
                     </tr>
                   ))}

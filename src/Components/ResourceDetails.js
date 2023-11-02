@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Table, Pagination, Form } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
+import { Table, Pagination, Form, Button } from "react-bootstrap";
 
 const ResourceDetails = () => {
   const { resource } = useParams();
@@ -10,14 +10,15 @@ const ResourceDetails = () => {
   const [recordsPerPage] = useState(50);
   const [sortField, setSortField] = useState(null);
   const [sortDirection, setSortDirection] = useState("asc");
-  const [searchTerm, setSearchTerm] = useState(""); 
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`https://engineering-task.elancoapps.com/api/resources/${resource}`)
       .then((response) => response.json())
       .then((data) => {
         setResourceData(data);
-        console.log(data)
+        console.log(data);
         setLoading(false);
       })
       .catch((error) => {
@@ -109,111 +110,118 @@ const ResourceDetails = () => {
 
   return (
     <div>
-    <h2 className="text-center my-3">{resource} Details</h2>
-    <div style={{ marginBottom: "10px" }}>
-      <Form.Control
-        type="text"
-        placeholder="Search..."
-        value={searchTerm}
-        onChange={handleSearchChange}
-        className="mb-3 w-50"
-      />
-    </div>
-    <Table striped bordered hover>
-      <thead>
-        <tr>
-          <th style={centerAlignStyle}>Serial Number</th>
-          <th
-            onClick={() => handleSort("ConsumedQuantity")}
-            style={{ ...centerAlignStyle, cursor: "pointer" }}
-          >
-            Consumed Quantity {getSortIcon("ConsumedQuantity")}
-          </th>
-          <th
-            onClick={() => handleSort("Cost")}
-            style={{ ...centerAlignStyle, cursor: "pointer" }}
-          >
-            Cost {getSortIcon("Cost")}
-          </th>
-          <th
-            onClick={() => handleSort("Date")}
-            style={{ ...centerAlignStyle, cursor: "pointer" }}
-          >
-            Date {getSortIcon("Date")}
-          </th>
-          <th
-            style={{ ...centerAlignStyle, cursor: "pointer" }}
-            onClick={() => handleSort("InstanceId")}
-          >
-            Instance Id {getSortIcon("InstanceId")}
-          </th>
-          <th
-            onClick={() => handleSort("MeterCategory")}
-            style={centerAlignStyle}
-          >
-            MeterCategory
-          </th>
-          <th
-            onClick={() => handleSort("ResourceGroup")}
-            style={centerAlignStyle}
-          >
-            Resource Group
-          </th>
-          <th
-            onClick={() => handleSort("ResourceLocation")}
-            style={centerAlignStyle}
-          >
-            Resource Location
-          </th>
-          <th
-            onClick={() => handleSort("UnitOfMeasure")}
-            style={{ ...centerAlignStyle, cursor: "pointer" }}
-          >
-            Unit Of Measure {getSortIcon("UnitOfMeasure")}
-          </th>
-          <th onClick={() => handleSort("Location")} style={centerAlignStyle}>
-            Location
-          </th>
-          <th
-            onClick={() => handleSort("ServiceName")}
-            style={centerAlignStyle}
-          >
-            Service Name
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {currentRecords.map(([field, value], index) => (
-          <tr key={index}>
-            <td style={centerAlignStyle}>{indexOfFirstRecord + index + 1}</td>
-            <td style={centerAlignStyle}>{value.ConsumedQuantity}</td>
-            <td style={centerAlignStyle}>{value.Cost}</td>
-            <td style={centerAlignStyle}>{value.Date}</td>
-            <td style={centerAlignStyle}>{value.InstanceId}</td>
-            <td style={centerAlignStyle}>{value.MeterCategory}</td>
-            <td style={centerAlignStyle}>{value.ResourceGroup}</td>
-            <td style={centerAlignStyle}>{value.ResourceLocation}</td>
-            <td style={centerAlignStyle}>{value.UnitOfMeasure}</td>
-            <td style={centerAlignStyle}>{value.Location}</td>
-            <td style={centerAlignStyle}>{value.ServiceName}</td>
+      <Button
+        onClick={() => navigate("/")}
+        variant="outline-secondary fw-bold"
+        className="ml-auto my-2 mx-2"
+      >
+        Back
+      </Button>
+      <h2 className="text-center my-3">{resource} Details</h2>
+      <div style={{ marginBottom: "10px" }}>
+        <Form.Control
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="mb-3 w-50"
+        />
+      </div>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th style={centerAlignStyle}>Serial Number</th>
+            <th
+              onClick={() => handleSort("ConsumedQuantity")}
+              style={{ ...centerAlignStyle, cursor: "pointer" }}
+            >
+              Consumed Quantity {getSortIcon("ConsumedQuantity")}
+            </th>
+            <th
+              onClick={() => handleSort("Cost")}
+              style={{ ...centerAlignStyle, cursor: "pointer" }}
+            >
+              Cost {getSortIcon("Cost")}
+            </th>
+            <th
+              onClick={() => handleSort("Date")}
+              style={{ ...centerAlignStyle, cursor: "pointer" }}
+            >
+              Date {getSortIcon("Date")}
+            </th>
+            <th
+              style={{ ...centerAlignStyle, cursor: "pointer" }}
+              onClick={() => handleSort("InstanceId")}
+            >
+              Instance Id {getSortIcon("InstanceId")}
+            </th>
+            <th
+              onClick={() => handleSort("MeterCategory")}
+              style={centerAlignStyle}
+            >
+              MeterCategory
+            </th>
+            <th
+              onClick={() => handleSort("ResourceGroup")}
+              style={centerAlignStyle}
+            >
+              Resource Group
+            </th>
+            <th
+              onClick={() => handleSort("ResourceLocation")}
+              style={centerAlignStyle}
+            >
+              Resource Location
+            </th>
+            <th
+              onClick={() => handleSort("UnitOfMeasure")}
+              style={{ ...centerAlignStyle, cursor: "pointer" }}
+            >
+              Unit Of Measure {getSortIcon("UnitOfMeasure")}
+            </th>
+            <th onClick={() => handleSort("Location")} style={centerAlignStyle}>
+              Location
+            </th>
+            <th
+              onClick={() => handleSort("ServiceName")}
+              style={centerAlignStyle}
+            >
+              Service Name
+            </th>
           </tr>
-        ))}
-      </tbody>
-    </Table>
-    <div className="d-flex justify-content-center">
-      <Pagination>
-        <Pagination.Prev
-          onClick={() => paginate(currentPage - 1)}
-          disabled={currentPage === 1}
-        />
-        {renderPageNumbers}
-        <Pagination.Next
-          onClick={() => paginate(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        />
-      </Pagination>
+        </thead>
+        <tbody>
+          {currentRecords.map(([field, value], index) => (
+            <tr key={index}>
+              <td style={centerAlignStyle}>{indexOfFirstRecord + index + 1}</td>
+              <td style={centerAlignStyle}>{value.ConsumedQuantity}</td>
+              <td style={centerAlignStyle}>{value.Cost}</td>
+              <td style={centerAlignStyle}>{value.Date}</td>
+              <td style={centerAlignStyle}>{value.InstanceId}</td>
+              <td style={centerAlignStyle}>{value.MeterCategory}</td>
+              <td style={centerAlignStyle}>{value.ResourceGroup}</td>
+              <td style={centerAlignStyle}>{value.ResourceLocation}</td>
+              <td style={centerAlignStyle}>{value.UnitOfMeasure}</td>
+              <td style={centerAlignStyle}>{value.Location}</td>
+              <td style={centerAlignStyle}>{value.ServiceName}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+      <div className="d-flex justify-content-center">
+        <Pagination>
+          <Pagination.Prev
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+          />
+          {renderPageNumbers}
+          <Pagination.Next
+            onClick={() => paginate(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          />
+        </Pagination>
+      </div>
     </div>
-  </div>
   );
 };
 
